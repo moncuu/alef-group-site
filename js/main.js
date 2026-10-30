@@ -144,7 +144,7 @@ function renderFooter() {
         </div>
         <div class="footer-bottom">
           <span>© ${new Date().getFullYear()} ALEF GROUP. Tüm hakları saklıdır.</span>
-          <span>KVKK Aydınlatma Metni · Çerez Politikası</span>
+          <span><button type="button" class="link-btn" data-open-kvkk>KVKK Aydınlatma Metni</button></span>
         </div>
       </div>
     </footer>

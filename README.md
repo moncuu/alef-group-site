@@ -2,8 +2,23 @@
 
 Statik (HTML + CSS + JS) kurumsal site. Kurulum gerektirmez.
 
-## Açmak
-`index.html` dosyasına çift tıklayın veya klasörü herhangi bir hosting'e (cPanel, Netlify, Vercel vb.) yükleyin.
+## Yerelde çalıştırmak
+Proje klasöründe terminale şunlardan birini yazın (Node.js gerekir, ek paket gerekmez):
+
+```
+npm start
+```
+veya
+```
+.\calistir
+```
+
+Site her zaman **http://localhost:8182** adresinde açılır ve tarayıcı kendiliğinden başlar.
+Terminal, telefondan test için yerel ağ adresini de gösterir. Durdurmak için `Ctrl+C`.
+Port `server.js` içindeki `PORT` satırından değiştirilebilir.
+
+## Yayınlamak
+Klasörü herhangi bir hosting'e (cPanel, Netlify, Vercel vb.) yükleyin. `server.js`, `package.json` ve `calistir.bat` yalnızca yerel test içindir.
 
 ## Yapı
 | Dosya | Sayfa |

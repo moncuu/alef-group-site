@@ -1,0 +1,10 @@
+{
+  "name": "alef-group-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ALEF GROUP kurumsal web sitesi",
+  "scripts": {
+    "start": "node server.js",
+    "calistir": "node server.js"
+  }
+}
