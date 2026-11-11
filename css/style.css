@@ -858,3 +858,22 @@ ul { margin: 0; padding: 0; list-style: none; }
   .calc output { min-width: 0; font-size: 18px; }
   .calc-summary { grid-template-columns: 1fr 1fr; }
 }
+
+/* ---------- İkon değiştirme (yeniden çizim yapmadan) ---------- */
+.i-on, .i-off { display: contents; }
+.i-off, .is-off .i-on { display: none; }
+.is-off .i-off { display: contents; }
+
+/* ---------- Mobil performans ----------
+   Kayan sayfa üzerinde sabit duran bulanık (backdrop-filter) katmanlar ve video üstü blur,
+   telefonlarda her karede yeniden hesaplanır ve takılmaya yol açar; bunların yerine opak zemin. */
+@media (max-width: 900px) {
+  .site-header { transition: background .3s; }
+  .site-header.scrolled, .site-header.solid { background: rgba(10, 22, 40, .97); backdrop-filter: none; }
+  .hero-badges { background: rgba(10, 22, 40, .88); backdrop-filter: none; }
+  .btn--ghost { backdrop-filter: none; background: rgba(5, 13, 26, .35); }
+  .video-toggle, .video-frame .play-chip, .fin-card .site-link { backdrop-filter: none; background: rgba(5, 13, 26, .75); }
+  .m-bar { backdrop-filter: none; background: var(--navy-900); }
+  .kvkk-dialog::backdrop { backdrop-filter: none; }
+  .fin-card video, .fin-card > img { transition: none; }
+}

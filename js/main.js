@@ -89,7 +89,7 @@ function renderHeader() {
         <div class="header-cta">
           <a class="header-phone" href="${COMPANY.phoneHref}">${icon("phone")} ${COMPANY.phone}</a>
           <a class="btn btn--gold" href="#iletisim">Teklif Alın</a>
-          <button class="nav-toggle" id="navToggle" aria-label="Menüyü aç">${icon("menu")}</button>
+          <button class="nav-toggle" id="navToggle" aria-label="Menüyü aç" aria-expanded="false"><span class="i-on">${icon("menu")}</span><span class="i-off">${icon("x")}</span></button>
         </div>
       </div>
     </header>
@@ -166,12 +166,15 @@ function renderFooter() {
 function initHeader() {
   const header = document.getElementById("siteHeader");
   const toTop = document.getElementById("toTop");
-  const onScroll = () => {
+  let scrolled, shown, ticking = false;
+  const update = () => {
+    ticking = false;
     const y = window.scrollY;
-    header.classList.toggle("scrolled", y > 40);
-    toTop.classList.toggle("show", y > 700);
+    if ((y > 40) !== scrolled) header.classList.toggle("scrolled", (scrolled = y > 40));
+    if ((y > 700) !== shown) toTop.classList.toggle("show", (shown = y > 700));
   };
-  onScroll();
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  update();
   window.addEventListener("scroll", onScroll, { passive: true });
   toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
@@ -194,50 +197,52 @@ function initHeader() {
   const mobile = document.getElementById("mobileNav");
   toggle.addEventListener("click", () => {
     const open = mobile.classList.toggle("open");
-    toggle.innerHTML = icon(open ? "x" : "menu");
+    toggle.classList.toggle("is-off", open);
+    toggle.setAttribute("aria-expanded", open);
     document.body.style.overflow = open ? "hidden" : "";
-    lucide.createIcons();
   });
   mobile.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
     mobile.classList.remove("open");
-    toggle.innerHTML = icon("menu");
+    toggle.classList.remove("is-off");
+    toggle.setAttribute("aria-expanded", false);
     document.body.style.overflow = "";
-    lucide.createIcons();
   }));
 }
 
-/* Görünür olduğunda video yükle/oynat, görünmezken durdur */
+/* Videolar: ekrana yaklaşınca yüklenir ve oynar; sonra kesintisiz döngüde oynamaya devam eder. */
 function initVideos() {
-  const videos = document.querySelectorAll("video[data-src]");
-  const load = (v) => {
-    if (v.dataset.loaded) return;
-    v.src = v.dataset.src;
-    v.dataset.loaded = "1";
+  const videos = [...document.querySelectorAll("video")];
+
+  const start = (v) => {
+    if (v.dataset.src && !v.dataset.loaded) {
+      v.src = v.dataset.src;
+      v.dataset.loaded = "1";
+    }
+    v.play().catch(() => {});
   };
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(({ target: v, isIntersecting }) => {
-      if (isIntersecting) {
-        load(v);
-        if (!v.dataset.paused) v.play().catch(() => {});
-      } else {
-        v.pause();
-      }
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) { start(target); io.unobserve(target); }
     });
-  }, { rootMargin: "200px 0px" });
+  }, { rootMargin: "300px 0px" });
+
   videos.forEach((v) => {
     v.muted = true;
     v.loop = true;
     v.playsInline = true;
-    io.observe(v);
+    if (v.dataset.src) io.observe(v);
   });
 
   // Hero video oynat/durdur düğmesi
   document.querySelectorAll("[data-video-toggle]").forEach((btn) => {
     const v = document.querySelector(btn.dataset.videoToggle);
+    btn.innerHTML = `<span class="i-on">${icon("pause")}</span><span class="i-off">${icon("play")}</span>`;
+    const sync = () => btn.classList.toggle("is-off", v.paused);
+    v.addEventListener("play", sync);
+    v.addEventListener("pause", sync);
     btn.addEventListener("click", () => {
-      if (v.paused) { delete v.dataset.paused; v.play(); btn.innerHTML = icon("pause"); }
-      else { v.dataset.paused = "1"; v.pause(); btn.innerHTML = icon("play"); }
-      lucide.createIcons();
+      if (v.paused) { delete v.dataset.paused; v.play().catch(() => {}); }
+      else { v.dataset.paused = "1"; v.pause(); }
     });
   });
 }
@@ -380,9 +385,9 @@ function renderContact() {
 renderHeader();
 renderContact();
 renderFooter();
-lucide.createIcons();
 initHeader();
 initVideos();
+lucide.createIcons();
 initReveal();
 initCounters();
 initMarquee();

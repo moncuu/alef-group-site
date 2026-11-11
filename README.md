@@ -31,6 +31,7 @@ Klasörü herhangi bir hosting'e (cPanel, Netlify, Vercel vb.) yükleyin. `serve
 | `site-yonetimi.html` | Site Yönetimi, Güvenlik & Temizlik |
 | `css/style.css` | Tüm tasarım (renkler en üstteki `:root` içinde) |
 | `js/main.js` | Ortak menü, footer, iletişim formu; **şirket bilgileri `COMPANY` içinde** |
+| `_headers`, `_redirects` | Canlı ortam güvenlik başlıkları (CSP, HSTS, clickjacking koruması) ve iç dosyaların gizlenmesi — Netlify / Cloudflare Pages |
 | `assets/videos/` | Arka plan videoları (Mixkit, ticari kullanım serbest) |
 | `assets/img/` | Video kapak görselleri ve favicon |
 

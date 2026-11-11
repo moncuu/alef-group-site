@@ -10,7 +10,7 @@ const path = require("path");
 const os = require("os");
 const { exec } = require("child_process");
 
-const PORT = 8182;
+const PORT = Number(process.env.PORT) || 8182;
 const ROOT = __dirname;
 
 const TYPES = {
@@ -28,33 +28,106 @@ const TYPES = {
   ".woff2": "font/woff2",
 };
 
-const server = http.createServer((req, res) => {
-  let urlPath = decodeURIComponent(req.url.split("?")[0]);
-  if (urlPath.endsWith("/")) urlPath += "index.html";
+// Güvenlik başlıkları (yerelde HTTP kullanıldığı için HSTS / upgrade-insecure-requests yok;
+// canlı ortam başlıkları _headers dosyasındadır)
+const SECURITY_HEADERS = {
+  "Content-Security-Policy": [
+    "default-src 'self'",
+    "script-src 'self' https://unpkg.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data:",
+    "media-src 'self'",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+  ].join("; "),
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+  "Cross-Origin-Opener-Policy": "same-origin",
+};
 
-  const file = path.normalize(path.join(ROOT, urlPath));
-  // Proje klasörünün dışına çıkılmasını engelle
-  if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
-    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-    return res.end("404 - Sayfa bulunamadı");
+// Yalnızca bu klasörler ve kökteki .html sayfaları yayınlanır;
+// server.js, package.json, .git, .claude gibi dosyalar asla sunulmaz.
+const PUBLIC_DIRS = ["assets", "css", "js"];
+const isPublic = (rel) => {
+  const parts = rel.split(path.sep);
+  if (parts.some((p) => p.startsWith("."))) return false;
+  if (parts.length === 1) return path.extname(rel).toLowerCase() === ".html";
+  return PUBLIC_DIRS.includes(parts[0].toLowerCase()) &&Boolean(TYPES[path.extname(rel).toLowerCase()]);
+};
+
+const send = (res, code, text, extra = {}) => {
+  res.writeHead(code, { ...SECURITY_HEADERS, "Content-Type": "text/plain; charset=utf-8", ...extra });
+  res.end(text);
+};
+
+// Yavaş/bağlantıyı açık tutan isteklere (slowloris) karşı zaman aşımları.
+// connectionsCheckingInterval, zaman aşımlarının ne sıklıkla denetlendiğini belirler (varsayılan 30 sn).
+const server = http.createServer({
+  headersTimeout: 10000,
+  requestTimeout: 30000,
+  connectionsCheckingInterval: 2000,
+}, (req, res) => {
+  if (req.method !== "GET" && req.method !== "HEAD") {
+    return send(res, 405, "405 - İzin verilmeyen istek", { Allow: "GET, HEAD" });
   }
 
-  const size = fs.statSync(file).size;
+  let urlPath;
+  try {
+    urlPath = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
+  } catch {
+    return send(res, 400, "400 - Geçersiz adres");
+  }
+  if (urlPath.includes("\0")) return send(res, 400, "400 - Geçersiz adres");
+  if (urlPath.endsWith("/")) urlPath += "index.html";
+
+  const file = path.resolve(ROOT, "." + urlPath);
+  const rel = path.relative(ROOT, file);
+  // Proje klasörünün dışına çıkılmasını ve gizli/iç dosyaların okunmasını engelle
+  if (!rel || rel.startsWith("..") || path.isAbsolute(rel) || !isPublic(rel)) {
+    return send(res, 404, "404 - Sayfa bulunamadı");
+  }
+
+  let stat;
+  try {
+    stat = fs.statSync(file);
+  } catch {
+    return send(res, 404, "404 - Sayfa bulunamadı");
+  }
+  if (!stat.isFile()) return send(res, 404, "404 - Sayfa bulunamadı");
+
+  const size = stat.size;
   const type = TYPES[path.extname(file).toLowerCase()] || "application/octet-stream";
-  const headers = { "Content-Type": type, "Accept-Ranges": "bytes", "Cache-Control": "no-cache" };
+  const headers = { ...SECURITY_HEADERS, "Content-Type": type, "Accept-Ranges": "bytes", "Cache-Control": "no-cache" };
+
+  const stream = (opts) => {
+    if (req.method === "HEAD") return res.end();
+    const rs = fs.createReadStream(file, opts);
+    rs.on("error", () => res.destroy());
+    rs.pipe(res);
+  };
 
   // Videoların ileri/geri sarılabilmesi için parça parça gönderim
-  const range = req.headers.range;
-  if (range) {
-    const [s, e] = range.replace("bytes=", "").split("-");
-    const start = Number(s);
-    const end = e ? Number(e) : size - 1;
+  // Anlaşılamayan veya çok parçalı aralıklar yok sayılır ve dosyanın tamamı gönderilir (RFC 9110).
+  const m = /^bytes=(\d*)-(\d*)$/.exec((req.headers.range || "").trim());
+  if (m && (m[1] !== "" || m[2] !== "")) {
+    let start, end;
+    if (m[1] !== "") { start = Number(m[1]); end = m[2] !== "" ? Math.min(Number(m[2]), size - 1) : size - 1; }
+    else { start = Math.max(size - Number(m[2]), 0); end = size - 1; }
+    if (start > end || start >= size) {
+      return send(res, 416, "416 - Geçersiz aralık", { "Content-Range": `bytes */${size}` });
+    }
     res.writeHead(206, { ...headers, "Content-Range": `bytes ${start}-${end}/${size}`, "Content-Length": end - start + 1 });
-    return fs.createReadStream(file, { start, end }).pipe(res);
+    return stream({ start, end });
   }
 
   res.writeHead(200, { ...headers, "Content-Length": size });
-  fs.createReadStream(file).pipe(res);
+  stream();
 });
 
 server.on("error", (err) => {
