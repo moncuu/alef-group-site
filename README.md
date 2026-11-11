@@ -23,7 +23,7 @@ Klasörü herhangi bir hosting'e (cPanel, Netlify, Vercel vb.) yükleyin. `serve
 ## Yapı
 | Dosya | Sayfa |
 |---|---|
-| `index.html` | Ana sayfa — "Alef Finansal Çözümler" paneli tıklanınca 5 kart açılır |
+| `index.html` | Ana sayfa — "Alef Çözümler" paneli tıklanınca 6 kart açılır |
 | `sigorta.html` | Sigorta Acenteliği & Alacak Yönetimi |
 | `bilisim.html` | Yapay Zeka, Bilişim & Yazılım |
 | `palet.html` | Ahşap Palet Üretimi |

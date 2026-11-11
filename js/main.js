@@ -15,6 +15,11 @@ const COMPANY = {
 
 const DIVISIONS = [
   {
+    slug: "finans", href: "finansal-cozumler.html", icon: "landmark",
+    title: "Finansal Çözümler",
+    short: "Nakdi teminatlı / teminatsız SBLC finansmanı ve borç yeniden yapılandırma.",
+  },
+  {
     slug: "sigorta", href: "sigorta.html", icon: "shield-check",
     title: "Sigorta Acenteliği & Alacak Yönetimi",
     short: "Kasko, trafik, sağlık, DASK ve kurumsal poliçeler; profesyonel alacak takibi.",
@@ -68,11 +73,11 @@ function renderHeader() {
           <a href="index.html">Ana Sayfa</a>
           <a href="index.html#hakkimizda">Kurumsal</a>
           <div class="nav-drop" id="navDrop">
-            <button type="button" aria-expanded="false" aria-haspopup="true">Finansal Çözümler ${icon("chevron-down")}</button>
+            <button type="button" aria-expanded="false" aria-haspopup="true">Çözümler ${icon("chevron-down")}</button>
             <div class="mega" role="menu">
               <div class="mega-intro">
-                <h4>Alef Finansal Çözümler</h4>
-                <p>Beş uzman iştirakimizle bireysel ve kurumsal ihtiyaçlarınıza tek çatı altında, bütünleşik çözümler sunuyoruz.</p>
+                <h4>Alef Çözümler</h4>
+                <p>Altı uzmanlık alanımızla bireysel ve kurumsal ihtiyaçlarınıza tek çatı altında, bütünleşik çözümler sunuyoruz.</p>
                 <a href="index.html#cozumler" class="btn btn--gold" style="padding:11px 20px;margin-top:8px">Tümünü Gör ${icon("arrow-right")}</a>
               </div>
               <div class="mega-grid">${megaLinks}</div>
@@ -91,7 +96,7 @@ function renderHeader() {
     <nav class="mobile-nav" id="mobileNav" aria-label="Mobil menü">
       <a href="index.html">Ana Sayfa</a>
       <a href="index.html#hakkimizda">Kurumsal</a>
-      <div class="label">Alef Finansal Çözümler</div>
+      <div class="label">Alef Çözümler</div>
       ${mobileLinks}
       <a href="index.html#neden-alef">Neden ALEF</a>
       <a href="#iletisim">İletişim</a>
@@ -123,7 +128,7 @@ function renderFooter() {
             <h4>Kurumsal</h4>
             <ul>
               <li><a href="index.html#hakkimizda">Hakkımızda</a></li>
-              <li><a href="index.html#cozumler">Finansal Çözümler</a></li>
+              <li><a href="index.html#cozumler">Çözümler</a></li>
               <li><a href="index.html#neden-alef">Neden ALEF</a></li>
               <li><a href="#iletisim">İletişim</a></li>
             </ul>
@@ -293,7 +298,7 @@ function initFaq() {
   });
 }
 
-/* Finansal Çözümler açılır paneli (ana sayfa) */
+/* Çözümler açılır paneli (ana sayfa) */
 function initSolutions() {
   const trigger = document.getElementById("finTrigger");
   const panel = document.getElementById("finPanel");
