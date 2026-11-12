@@ -20,7 +20,7 @@ const DIVISIONS = [
   {
     slug: "finans", href: "finansal-cozumler.html", icon: "landmark",
     title: "Finansal Çözümler",
-    short: "Nakdi teminatlı / teminatsız SBLC finansmanı ve borç yeniden yapılandırma.",
+    short: "Finansman danışmanlığı ve banka borçları için yeniden yapılandırma danışmanlığı.",
   },
   {
     slug: "sigorta", href: "sigorta.html", icon: "shield-check",
@@ -203,11 +203,27 @@ function initHeader() {
     toggle.setAttribute("aria-expanded", open);
     document.body.style.overflow = open ? "hidden" : "";
   });
-  mobile.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+  const closeMobile = () => {
     mobile.classList.remove("open");
     toggle.classList.remove("is-off");
     toggle.setAttribute("aria-expanded", false);
     document.body.style.overflow = "";
+  };
+  mobile.querySelectorAll("a").forEach((a) => a.addEventListener("click", (e) => {
+    closeMobile();
+    // Aynı sayfadaki bölüme gidiş: menü kapandıktan sonra kendimiz kaydırıyoruz.
+    // (iOS Safari, kaydırma kilidi kalkarken başlayan çapa kaydırmasını yok sayabiliyor.)
+    const url = new URL(a.href, location.href);
+    const target = url.hash && url.pathname === location.pathname && document.querySelector(url.hash);
+    if (!target) return;
+    e.preventDefault();
+    setTimeout(() => {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (location.hash !== url.hash) {
+        history.pushState(null, "", url.hash);
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
+      }
+    }, 60);
   }));
 }
 
