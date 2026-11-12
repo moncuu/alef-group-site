@@ -1,10 +1,10 @@
 /* =========================================================
-   ALEF GROUP — KVKK Aydınlatma Metni (açılır pencere)
+   ALEF GRUP — KVKK Aydınlatma Metni (açılır pencere)
    Yalnızca alt bilgideki "KVKK Aydınlatma Metni" bağlantısıyla açılır.
    Ticari unvan, MERSİS ve KEP bilgilerini aşağıdaki KVKK_COMPANY içine yazın.
    ========================================================= */
 
-const KVKK_UPDATED = "30.10.2026";
+const KVKK_UPDATED = "12.11.2026";
 
 // Şirket bilgileri: boş bırakılan alanlar metinde gösterilmez, doldurulduğunda otomatik görünür
 const KVKK_COMPANY = {
@@ -17,7 +17,7 @@ const kvkkRow = (label, value) => (value ? `<tr><th>${label}</th><td>${value}</t
 
 function kvkkContent() {
   return `
-    <p class="kvkk-lead">ALEF GROUP olarak kişisel verilerinizin güvenliğine önem veriyoruz. Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") ve Aydınlatma Yükümlülüğünün Yerine Getirilmesinde Uyulacak Usul ve Esaslar Hakkında Tebliğ uyarınca, web sitemiz ve iletişim kanallarımız aracılığıyla işlenen kişisel verileriniz hakkında sizi bilgilendirmek amacıyla hazırlanmıştır.</p>
+    <p class="kvkk-lead">ALEF GRUP olarak kişisel verilerinizin güvenliğine önem veriyoruz. Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") ve Aydınlatma Yükümlülüğünün Yerine Getirilmesinde Uyulacak Usul ve Esaslar Hakkında Tebliğ uyarınca, web sitemiz ve iletişim kanallarımız aracılığıyla işlenen kişisel verileriniz hakkında sizi bilgilendirmek amacıyla hazırlanmıştır.</p>
 
     <h3>1. Veri Sorumlusu</h3>
     <p>Kişisel verileriniz, veri sorumlusu sıfatıyla aşağıda bilgileri yer alan şirketimiz tarafından işlenmektedir:</p>
@@ -35,7 +35,7 @@ function kvkkContent() {
       <li><b>Kimlik bilgileri:</b> Ad, soyad.</li>
       <li><b>İletişim bilgileri:</b> Telefon numarası, e-posta adresi.</li>
       <li><b>Müşteri işlem bilgileri:</b> İlgilendiğiniz hizmet, talep ve mesaj içerikleri, teklif ve görüşme kayıtları.</li>
-      <li><b>İşlem güvenliği bilgileri:</b> IP adresi, tarayıcı bilgileri, ziyaret tarih ve saatleri gibi sunucu kayıtları.</li>
+      <li><b>İşlem güvenliği bilgileri:</b> IP adresi, tarayıcı bilgileri, ziyaret tarih ve saatleri gibi, web sitesinin barındırıldığı sunucu tarafından otomatik tutulan erişim kayıtları.</li>
     </ul>
     <p>Web sitemiz üzerinden özel nitelikli kişisel veri (sağlık, biyometrik veri vb.) talep edilmemektedir. Mesaj alanına bu tür bilgiler yazmamanızı rica ederiz.</p>
 
@@ -50,14 +50,14 @@ function kvkkContent() {
     </ul>
 
     <h3>4. Kişisel Verilerin Toplanma Yöntemi ve Hukuki Sebebi</h3>
-    <p>Kişisel verileriniz; web sitemizdeki iletişim formu, WhatsApp, telefon ve e-posta kanalları aracılığıyla, kısmen otomatik yollarla elektronik ortamda toplanmaktadır. Verileriniz KVKK'nın 5. maddesinde yer alan aşağıdaki hukuki sebeplere dayanılarak işlenir:</p>
+    <p>Kişisel verileriniz; web sitemizdeki teklif formu (form, talebinizi WhatsApp mesajı olarak hazırlar), WhatsApp, telefon ve e-posta kanalları aracılığıyla, kısmen otomatik yollarla elektronik ortamda toplanmaktadır. Verileriniz KVKK'nın 5. maddesinde yer alan aşağıdaki hukuki sebeplere dayanılarak işlenir:</p>
     <ul>
       <li>Bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması (md. 5/2-c),</li>
       <li>Veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi için zorunlu olması (md. 5/2-ç),</li>
       <li>Bir hakkın tesisi, kullanılması veya korunması için zorunlu olması (md. 5/2-e),</li>
       <li>İlgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla, veri sorumlusunun meşru menfaatleri için zorunlu olması (md. 5/2-f).</li>
     </ul>
-    <p>Pazarlama ve kampanya bildirimleri gibi yukarıdaki sebeplere dayanmayan işlemler için ayrıca açık rızanız alınır.</p>
+    <p>Teklif formu aracılığıyla iletilen verilerinizin yurt dışına aktarılması (bkz. madde 5) ile pazarlama ve kampanya bildirimleri gibi yukarıdaki sebeplere dayanmayan işlemler, yalnızca <b>açık rızanıza</b> (md. 5/1 ve md. 9) dayanılarak gerçekleştirilir. Açık rızanızı dilediğiniz zaman geri alabilirsiniz; geri alma, önceki işlemlerin hukuka uygunluğunu etkilemez.</p>
 
     <h3>5. Kişisel Verilerin Aktarılması</h3>
     <p>Kişisel verileriniz, yukarıdaki amaçlarla sınırlı ve ölçülü olmak kaydıyla aşağıdaki alıcı gruplarına aktarılabilir:</p>
@@ -67,12 +67,20 @@ function kvkkContent() {
       <li><b>Hizmet sağlayıcılarımız:</b> Barındırma (hosting), e-posta ve bilgi teknolojileri hizmeti aldığımız firmalara,</li>
       <li><b>Yetkili kamu kurum ve kuruluşları:</b> Kanunen yetkili mercilerin talebi halinde.</li>
     </ul>
-    <p><b>Yurt dışına aktarım:</b> İletişim formu talebinizi WhatsApp uygulaması üzerinden iletmektedir. WhatsApp'ı kullanmayı tercih etmeniz halinde mesajınız, sunucuları yurt dışında bulunan WhatsApp LLC (Meta Platforms) altyapısı üzerinden iletilir. Bu aktarım KVKK'nın 9. maddesi kapsamında gerçekleştirilir. Yurt dışı aktarım istemiyorsanız bize telefon veya e-posta ile de ulaşabilirsiniz.</p>
+    <p><b>Yurt dışına aktarım:</b></p>
+    <ul>
+      <li><b>Teklif formu ve WhatsApp:</b> Teklif formu, talebinizi WhatsApp uygulamasında hazır bir mesaj olarak açar. Mesajı göndermeniz halinde içerik, sunucuları yurt dışında bulunan WhatsApp (Meta Platforms) altyapısı üzerinden iletilir. Bu aktarım, formdaki onay kutusuyla verdiğiniz açık rızaya dayanır (KVKK md. 9).</li>
+      <li><b>Web sitesi barındırma:</b> Web sitemiz yurt dışında bulunan bir barındırma hizmeti üzerinden yayınlanmaktadır. Siteyi ziyaret ettiğinizde IP adresiniz ve tarayıcı bilgileriniz, sayfaların size iletilebilmesi için bu hizmet sağlayıcının sunucularında teknik olarak işlenir.</li>
+    </ul>
+    <p>Yurt dışına aktarım istemiyorsanız bize <b>${COMPANY.phone}</b> numaralı telefon hattımızdan ulaşabilirsiniz.</p>
 
-    <h3>6. Saklama Süresi</h3>
+    <h3>6. Çerezler ve Üçüncü Taraf Hizmetler</h3>
+    <p>Web sitemiz çerez (cookie), reklam veya ziyaretçi takip/analiz aracı kullanmamaktadır. Yazı tipleri, ikonlar, görseller ve videolar sitemizin kendi sunucusundan yüklenir; bu içerikler için üçüncü taraflara veri aktarılmaz. Sitemizdeki WhatsApp, harita ve telefon bağlantılarına tıklamanız halinde ilgili hizmetin kendi gizlilik koşulları geçerli olur.</p>
+
+    <h3>7. Saklama Süresi</h3>
     <p>Kişisel verileriniz, işlenme amacının gerektirdiği süre ve ilgili mevzuatta öngörülen zamanaşımı süreleri boyunca saklanır. Sözleşmeye dönüşmeyen teklif ve bilgi talepleri en fazla <b>2 yıl</b> süreyle saklanır. Süre sonunda verileriniz silinir, yok edilir veya anonim hale getirilir.</p>
 
-    <h3>7. İlgili Kişi Olarak Haklarınız (KVKK md. 11)</h3>
+    <h3>8. İlgili Kişi Olarak Haklarınız (KVKK md. 11)</h3>
     <p>Şirketimize başvurarak;</p>
     <ul>
       <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
@@ -87,7 +95,7 @@ function kvkkContent() {
     </ul>
     <p>haklarına sahipsiniz.</p>
 
-    <h3>8. Başvuru Yöntemi</h3>
+    <h3>9. Başvuru Yöntemi</h3>
     <p>Haklarınıza ilişkin taleplerinizi, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun olarak;</p>
     <ul>
       <li>Kimliğinizi tespit edici belgelerle birlikte <b>${COMPANY.address}</b> adresine şahsen veya noter aracılığıyla,</li>
@@ -95,6 +103,11 @@ function kvkkContent() {
       <li>Sistemimizde kayıtlı e-posta adresinizden <b>${COMPANY.email}</b> adresine</li>
     </ul>
     <p>iletebilirsiniz. Başvurunuzda ad, soyad, T.C. kimlik numarası (yabancılar için uyruk ve pasaport numarası), tebligata esas adres, varsa e-posta ve telefon bilgileriniz ile talep konunuzun bulunması gerekir. Talepleriniz en geç <b>30 gün</b> içinde ücretsiz olarak sonuçlandırılır. İşlemin ayrıca bir maliyet gerektirmesi halinde Kişisel Verileri Koruma Kurulu'nca belirlenen ücret alınabilir.</p>
+
+    <p>Başvurunuzun reddedilmesi, verilen cevabı yetersiz bulmanız veya süresinde cevap verilmemesi halinde; cevabı öğrendiğiniz tarihten itibaren 30 gün ve her halde başvuru tarihinden itibaren 60 gün içinde <b>Kişisel Verileri Koruma Kurulu'na şikâyette</b> bulunabilirsiniz (KVKK md. 14).</p>
+
+    <h3>10. Veri Güvenliği</h3>
+    <p>Kişisel verilerinizin hukuka aykırı olarak işlenmesini ve erişilmesini önlemek ve muhafazasını sağlamak amacıyla KVKK'nın 12. maddesi uyarınca gerekli teknik ve idari tedbirler alınmaktadır. Web sitemiz şifreli bağlantı (HTTPS) üzerinden yayınlanır; teklif formuna girdiğiniz bilgiler web sitemizde saklanmaz.</p>
 
     <p class="kvkk-date">Son güncelleme: ${KVKK_UPDATED}</p>`;
 }

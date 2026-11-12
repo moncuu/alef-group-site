@@ -1,5 +1,5 @@
 /* =========================================================
-   ALEF GROUP — Finansal Çözümler: örnek ödeme planı hesaplayıcı
+   ALEF GRUP — Finansal Çözümler: örnek ödeme planı hesaplayıcı
    ========================================================= */
 (function () {
   const amountInput = document.getElementById("calcAmount");

@@ -1,9 +1,9 @@
 /* =========================================================
-   ALEF GROUP — Ortak bileşenler ve etkileşimler
+   ALEF GRUP — Ortak bileşenler ve etkileşimler
    ========================================================= */
 
 const COMPANY = {
-  name: "ALEF GROUP",
+  name: "ALEF GRUP",
   phone: "0850 550 34 59",
   phoneHref: "tel:+908505503459",
   mobile: "+90 533 413 88 71",
@@ -11,6 +11,9 @@ const COMPANY = {
   email: "info@alefgrup.com.tr",
   address: "Velimeşe Mah. Ertuğrul Gazi Sok. No:14, Ergene / Tekirdağ",
   maps: "https://maps.google.com/?q=Velime%C5%9Fe+Mah.+Ertu%C4%9Frul+Gazi+Sok.+No:14+Ergene+Tekirda%C4%9F",
+  founded: 2007,
+  instagram: "https://www.instagram.com/alefgrup.avrupa/",
+  facebook: "https://www.facebook.com/profile.php?id=61558870140220",
 };
 
 const DIVISIONS = [
@@ -32,7 +35,7 @@ const DIVISIONS = [
   {
     slug: "palet", href: "palet.html", icon: "package",
     title: "Ahşap Palet Üretimi",
-    short: "Euro, standart, ihracat (ISPM-15) ve özel ölçü palet & sandık üretimi.",
+    short: "Euro, ihracat (ISPM-15) ve özel ölçü palet üretimi; 2. el ahşap alım-satım.",
   },
   {
     slug: "otomotiv", href: "otomotiv.html", icon: "droplet",
@@ -65,9 +68,9 @@ function renderHeader() {
   document.body.insertAdjacentHTML("afterbegin", `
     <header class="site-header${solid}" id="siteHeader">
       <div class="container header-inner">
-        <a href="index.html" class="logo" aria-label="ALEF GROUP Ana Sayfa">
+        <a href="index.html" class="logo" aria-label="ALEF GRUP Ana Sayfa">
           <span class="logo-mark" aria-hidden="true">א</span>
-          <span class="logo-text"><b>ALEF</b><small>Group</small></span>
+          <span class="logo-text"><b>ALEF</b><small>Grup</small></span>
         </a>
         <nav class="main-nav" aria-label="Ana menü">
           <a href="index.html">Ana Sayfa</a>
@@ -114,13 +117,12 @@ function renderFooter() {
           <div class="footer-about">
             <a href="index.html" class="logo">
               <span class="logo-mark" aria-hidden="true">א</span>
-              <span class="logo-text"><b>ALEF</b><small>Group</small></span>
+              <span class="logo-text"><b>ALEF</b><small>Grup</small></span>
             </a>
             <p>Finans, sigorta, teknoloji, üretim, otomotiv ve tesis yönetimi alanlarında uzman iştirakleriyle güvenilir, bütünleşik çözümler.</p>
             <div class="socials">
-              <a href="#" aria-label="LinkedIn">${icon("linkedin")}</a>
-              <a href="#" aria-label="Instagram">${icon("instagram")}</a>
-              <a href="#" aria-label="Facebook">${icon("facebook")}</a>
+              <a href="${COMPANY.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${icon("instagram")}</a>
+              <a href="${COMPANY.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${icon("facebook")}</a>
               <a href="https://wa.me/${COMPANY.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp">${icon("message-circle")}</a>
             </div>
           </div>
@@ -148,7 +150,7 @@ function renderFooter() {
           </div>
         </div>
         <div class="footer-bottom">
-          <span>© ${new Date().getFullYear()} ALEF GROUP. Tüm hakları saklıdır.</span>
+          <span>© ${COMPANY.founded} ${COMPANY.name}. Tüm hakları saklıdır.</span>
           <span><button type="button" class="link-btn" data-open-kvkk>KVKK Aydınlatma Metni</button></span>
         </div>
       </div>
@@ -258,6 +260,13 @@ function initReveal() {
 
 /* Sayaç animasyonu */
 function initCounters() {
+  // Deneyim yılı kuruluş yılından otomatik hesaplanır (data-years)
+  const years = new Date().getFullYear() - COMPANY.founded;
+  document.querySelectorAll("[data-years]").forEach((el) => {
+    el.dataset.count = years;
+    el.textContent = years;
+  });
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(({ target, isIntersecting }) => {
       if (!isIntersecting) return;
@@ -323,14 +332,18 @@ function initSolutions() {
   window.addEventListener("hashchange", openFromHash);
 }
 
-/* İletişim formu: mesajı WhatsApp'a hazırlar */
+/* İletişim formu: talebi hazır bir WhatsApp mesajı olarak COMPANY.whatsapp hattına açar */
 function initForms() {
   document.querySelectorAll("form[data-contact]").forEach((form) => {
+    const status = form.querySelector(".form-status");
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const data = new FormData(form);
+      if (data.get("_honey")) return; // Spam botu
+
       const lines = [
-        "Merhaba ALEF GROUP, web sitesi üzerinden teklif talebi:",
+        `Merhaba ${COMPANY.name}, web sitesi üzerinden teklif talebi:`,
         `Ad Soyad: ${data.get("name")}`,
         `Telefon: ${data.get("phone")}`,
         data.get("email") ? `E-posta: ${data.get("email")}` : "",
@@ -338,7 +351,9 @@ function initForms() {
         data.get("message") ? `Mesaj: ${data.get("message")}` : "",
       ].filter(Boolean);
       window.open(`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener");
-      form.querySelector(".form-success").classList.add("show");
+
+      status.className = "form-status full show ok";
+      status.textContent = "Teşekkürler! Talebiniz WhatsApp'ta hazırlandı; açılan pencerede \"Gönder\"e basmanız yeterli.";
       form.reset();
     });
   });
@@ -365,7 +380,7 @@ function renderContact() {
           <a href="https://wa.me/${COMPANY.whatsapp}" target="_blank" rel="noopener"><span class="ico">${icon("message-circle")}</span><span><small>WhatsApp Hattı</small><b>${COMPANY.mobile}</b></span></a>
           <a href="mailto:${COMPANY.email}"><span class="ico">${icon("mail")}</span><span><small>E-posta</small><b>${COMPANY.email}</b></span></a>
           <a href="${COMPANY.maps}" target="_blank" rel="noopener"><span class="ico">${icon("map-pin")}</span><span><small>Merkez Ofis</small><b>${COMPANY.address}</b></span></a>
-          <div class="item"><span class="ico">${icon("clock")}</span><span><small>Çalışma Saatleri</small><b>Hafta içi 08:30 – 18:30 · Cumartesi 09:00 – 14:00</b></span></div>
+          <div class="item"><span class="ico">${icon("clock")}</span><span><small>Çalışma Saatleri</small><b>Pazartesi – Cuma · 08:30 – 18:00</b></span></div>
         </div>
         <form class="form reveal" data-delay="1" data-contact>
           <h3>Teklif & Bilgi Talebi</h3>
@@ -374,9 +389,13 @@ function renderContact() {
           <div class="field"><label for="f-email">E-posta</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
           <div class="field"><label for="f-service">İlgilendiğiniz Hizmet *</label><select id="f-service" name="service" required>${options}<option>Genel Bilgi</option></select></div>
           <div class="field full"><label for="f-msg">Mesajınız</label><textarea id="f-msg" name="message" placeholder="Kısaca ihtiyacınızı anlatın…"></textarea></div>
-          <p class="note full">Formu gönderdiğinizde talebiniz WhatsApp üzerinden ekibimize iletilir. Kişisel verileriniz KVKK kapsamında korunur.</p>
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="note full">Kişisel verileriniz, sayfanın en altında yer alan KVKK Aydınlatma Metni kapsamında işlenir.</p>
+          <label class="consent full"><input type="checkbox" name="consent" required>
+            <span>Talebimin WhatsApp (Meta Platforms) altyapısı üzerinden iletilmesi nedeniyle kişisel verilerimin yurt dışına aktarılmasına açık rıza veriyorum. * <em>(Rıza vermek istemiyorsanız bize ${COMPANY.phone} numaralı hattımızdan ulaşabilirsiniz.)</em></span>
+          </label>
           <div class="full"><button class="btn btn--dark" type="submit">Talebi Gönder ${icon("send")}</button></div>
-          <div class="form-success">Teşekkürler! Talebiniz WhatsApp'a aktarıldı, ekibimiz kısa sürede dönüş yapacak.</div>
+          <p class="form-status full" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>`;

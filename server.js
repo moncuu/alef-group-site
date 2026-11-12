@@ -1,5 +1,5 @@
 /* =========================================================
-   ALEF GROUP — Yerel geliştirme sunucusu
+   ALEF GRUP — Yerel geliştirme sunucusu
    Çalıştırma: npm start  (veya .\calistir)
    Adres:      http://localhost:8182
    ========================================================= */
@@ -33,9 +33,9 @@ const TYPES = {
 const SECURITY_HEADERS = {
   "Content-Security-Policy": [
     "default-src 'self'",
-    "script-src 'self' https://unpkg.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
     "img-src 'self' data:",
     "media-src 'self'",
     "connect-src 'self'",
@@ -148,7 +148,7 @@ server.listen(PORT, "0.0.0.0", () => {
     .filter((i) => i.family === "IPv4" && !i.internal && !i.address.startsWith("192.168.56."));
   const lan = candidates.find((i) => /wi-?fi|wlan|wireless/i.test(i.name)) || candidates[0];
 
-  console.log("\n  ALEF GROUP sitesi çalışıyor\n");
+  console.log("\n  ALEF GRUP sitesi çalışıyor\n");
   console.log(`  Bilgisayar : http://localhost:${PORT}`);
   if (lan) console.log(`  Telefon    : http://${lan.address}:${PORT}  (aynı Wi-Fi ağında)`);
   console.log("\n  Durdurmak için Ctrl+C\n");

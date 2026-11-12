@@ -1,4 +1,4 @@
-# ALEF GROUP — Kurumsal Web Sitesi
+# ALEF GRUP — Kurumsal Web Sitesi
 
 Statik (HTML + CSS + JS) kurumsal site. Kurulum gerektirmez.
 
