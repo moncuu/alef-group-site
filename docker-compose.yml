@@ -1,0 +1,27 @@
+services:
+  site:
+    build: .
+    image: alef-group-site
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs: ["/tmp"]
+    mem_limit: 256m
+    pids_limit: 100
+    # Port dışarı açılmaz; trafik yalnızca tünelden gelir.
+    # Yerelde denemek için alttaki satırı aç:
+    # ports: ["127.0.0.1:8182:8182"]
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    depends_on:
+      site:
+        condition: service_healthy

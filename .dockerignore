@@ -1,0 +1,14 @@
+.git
+.gitignore
+.claude
+.env
+*.md
+calistir.bat
+_headers
+_redirects
+Dockerfile
+docker-compose.yml
+.dockerignore
+Thumbs.db
+.DS_Store
+node_modules
