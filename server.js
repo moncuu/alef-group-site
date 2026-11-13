@@ -103,7 +103,9 @@ const server = http.createServer({
 
   const size = stat.size;
   const type = TYPES[path.extname(file).toLowerCase()] || "application/octet-stream";
-  const headers = { ...SECURITY_HEADERS, "Content-Type": type, "Accept-Ranges": "bytes", "Cache-Control": "no-cache" };
+  const headers = { ...SECURITY_HEADERS, "Content-Type": type, "Accept-Ranges": "bytes",
+    // HTML her seferinde tazelenir; görsel, video, font, css ve js 30 gün önbellekte kalır (Cloudflare kenarında da)
+    "Cache-Control": rel.endsWith(".html") ? "no-cache" : "public, max-age=2592000" };
 
   const stream = (opts) => {
     if (req.method === "HEAD") return res.end();
