@@ -47,6 +47,11 @@ const DIVISIONS = [
     title: "Site Yönetimi, Güvenlik & Temizlik",
     short: "Profesyonel site yönetimi, özel güvenlik, temizlik ve teknik bakım.",
   },
+  {
+    slug: "atik", href: "atik-yonetimi.html", icon: "recycle",
+    title: "Atık Yönetimi & Geri Dönüşüm",
+    short: "Kurumsal atık yönetimi, sıfır atık danışmanlığı ve geri dönüşüm hizmetleri.",
+  },
 ];
 
 const page = document.body.dataset.page || "home";
@@ -80,7 +85,7 @@ function renderHeader() {
             <div class="mega" role="menu">
               <div class="mega-intro">
                 <h4>Alef Çözümler</h4>
-                <p>Altı uzmanlık alanımızla bireysel ve kurumsal ihtiyaçlarınıza tek çatı altında, bütünleşik çözümler sunuyoruz.</p>
+                <p>Yedi uzmanlık alanımızla bireysel ve kurumsal ihtiyaçlarınıza tek çatı altında, bütünleşik çözümler sunuyoruz.</p>
                 <a href="index.html#cozumler" class="btn btn--gold" style="padding:11px 20px;margin-top:8px">Tümünü Gör ${icon("arrow-right")}</a>
               </div>
               <div class="mega-grid">${megaLinks}</div>
@@ -119,7 +124,7 @@ function renderFooter() {
               <span class="logo-mark" aria-hidden="true">א</span>
               <span class="logo-text"><b>ALEF</b><small>Grup</small></span>
             </a>
-            <p>Finans, sigorta, teknoloji, üretim, otomotiv ve tesis yönetimi alanlarında uzman iştirakleriyle güvenilir, bütünleşik çözümler.</p>
+            <p>Finans, sigorta, teknoloji, üretim, otomotiv, tesis yönetimi ve atık yönetimi alanlarında uzman iştirakleriyle güvenilir, bütünleşik çözümler.</p>
             <div class="socials">
               <a href="${COMPANY.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${icon("instagram")}</a>
               <a href="${COMPANY.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${icon("facebook")}</a>
@@ -375,6 +380,38 @@ function initForms() {
   });
 }
 
+/* Ürün kataloğu: kategori filtresi ve fotoğraf büyütme */
+function initCatalog() {
+  const tabs = document.querySelectorAll(".prod-filter [data-filter]");
+  const items = document.querySelectorAll(".prod[data-cat]");
+  tabs.forEach((btn) => btn.addEventListener("click", () => {
+    const f = btn.dataset.filter;
+    tabs.forEach((b) => b.setAttribute("aria-selected", b === btn));
+    items.forEach((el) => {
+      el.hidden = f !== "all" && el.dataset.cat !== f;
+      el.classList.add("in");
+    });
+  }));
+
+  const zooms = document.querySelectorAll("[data-zoom]");
+  if (!zooms.length) return;
+  document.body.insertAdjacentHTML("beforeend", `
+    <dialog class="zoom-dialog" id="zoomDialog" aria-label="Ürün fotoğrafı">
+      <img alt="">
+      <button type="button" aria-label="Kapat">${icon("x")}</button>
+    </dialog>`);
+  const dialog = document.getElementById("zoomDialog");
+  const img = dialog.querySelector("img");
+  lucide.createIcons();
+  dialog.querySelector("button").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+  zooms.forEach((btn) => btn.addEventListener("click", () => {
+    img.src = btn.dataset.zoom;
+    img.alt = btn.querySelector("img").alt;
+    dialog.showModal();
+  }));
+}
+
 /* Ortak iletişim bölümü (her sayfanın sonunda) */
 function renderContact() {
   const slot = document.getElementById("iletisim");
@@ -429,3 +466,4 @@ initMarquee();
 initFaq();
 initSolutions();
 initForms();
+initCatalog();

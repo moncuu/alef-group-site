@@ -42,7 +42,7 @@ function kvkkContent() {
     <h3>3. Kişisel Verilerin İşlenme Amaçları</h3>
     <ul>
       <li>Teklif, bilgi ve görüşme taleplerinizin alınması, değerlendirilmesi ve size dönüş yapılması,</li>
-      <li>Talebinizin ilgili iştirakimize (sigorta, bilişim, palet üretimi, madeni yağ, site yönetimi) yönlendirilmesi,</li>
+      <li>Talebinizin ilgili iştirakimize (finansal danışmanlık, sigorta, bilişim, palet üretimi, madeni yağ, site yönetimi, atık yönetimi ve geri dönüşüm) yönlendirilmesi,</li>
       <li>Sözleşme öncesi görüşmelerin yürütülmesi ve sözleşmenin kurulması,</li>
       <li>Müşteri ilişkilerinin yönetimi ve hizmet kalitesinin artırılması,</li>
       <li>Web sitesinin güvenliğinin sağlanması ve teknik işleyişinin sürdürülmesi,</li>

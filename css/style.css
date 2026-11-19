@@ -41,6 +41,7 @@
 .theme-palet    { --accent: #c08645; --accent-soft: rgba(192, 134, 69, .14); }
 .theme-otomotiv { --accent: #e3241b; --accent-soft: rgba(227, 36, 27, .10); }
 .theme-site     { --accent: #17a884; --accent-soft: rgba(23, 168, 132, .12); }
+.theme-atik     { --accent: #5a9e2f; --accent-soft: rgba(90, 158, 47, .13); }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -332,6 +333,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) - 40px); }
 .fin-panel.open .fin-card:nth-child(4) { transition-delay: .45s; }
 .fin-panel.open .fin-card:nth-child(5) { transition-delay: .55s; }
 .fin-panel.open .fin-card:nth-child(6) { transition-delay: .65s; }
+.fin-panel.open .fin-card:nth-child(7) { transition-delay: .75s; }
+/* 7. kart son satırda tam genişlik */
+.fin-card:nth-child(7) { grid-column: 1 / -1; min-height: 320px; }
 .fin-card video, .fin-card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .fin-card::before {
   content: ""; position: absolute; inset: 0; z-index: 1;
@@ -904,4 +908,58 @@ section[id] { scroll-margin-top: calc(var(--header-h) - 40px); }
   .m-bar { backdrop-filter: none; background: var(--navy-900); }
   .kvkk-dialog::backdrop { backdrop-filter: none; }
   .fin-card video, .fin-card > img { transition: none; }
+}
+
+/* ---------- Otomotiv: ürün kataloğu ---------- */
+.prod-filter { display: flex; justify-content: center; margin-bottom: 32px; }
+.prod-filter .seg { flex-wrap: wrap; justify-content: center; }
+.prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.prod {
+  display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.prod:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.prod[hidden] { display: none; }
+.prod-media {
+  position: relative; display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in;
+  aspect-ratio: 1 / 1; background: #f6f6f6; overflow: hidden;
+}
+.prod-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 52%; transform: scale(1.12); transition: transform .6s var(--ease); }
+.prod:hover .prod-media img { transform: scale(1.18); }
+.prod-zoom {
+  position: absolute; right: 14px; bottom: 14px; width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center; background: rgba(10, 22, 40, .75); color: #fff; opacity: 0; transition: opacity .3s;
+}
+.prod-zoom svg { width: 18px; height: 18px; }
+.prod:hover .prod-zoom, .prod-media:focus-visible .prod-zoom { opacity: 1; }
+.prod-body { flex: 1; display: flex; flex-direction: column; padding: 22px 24px 24px; border-top: 1px solid var(--line); }
+.prod-cat { font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.prod h3 { font-size: 19px; font-weight: 600; margin-bottom: 4px; }
+.prod h3 b { color: var(--accent); font-weight: 700; }
+.prod-type { font-size: 13.5px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+.prod-desc { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+.prod .specs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.prod .specs span { font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+.prod-appr { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-bottom: 18px; }
+.prod-appr small { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 2px; }
+.prod-appr em { font-style: normal; font-weight: 600; color: var(--ink); white-space: nowrap; cursor: help; }
+.prod-cta {
+  margin-top: auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px;
+  border-radius: 999px; background: var(--navy-900); color: #fff; font-weight: 600; font-size: 14px; transition: background .3s;
+}
+.prod-cta:hover { background: var(--accent); }
+.prod-cta svg { width: 17px; height: 17px; }
+
+/* Ürün fotoğrafı büyütme penceresi */
+.zoom-dialog { padding: 0; border: 0; border-radius: var(--radius-lg); background: #f6f6f6; max-width: min(560px, calc(100vw - 32px)); max-height: 92vh; overflow: hidden; }
+.zoom-dialog::backdrop { background: rgba(5, 13, 26, .8); backdrop-filter: blur(4px); }
+.zoom-dialog img { display: block; width: 100%; height: auto; max-height: 92vh; object-fit: contain; }
+.zoom-dialog button { position: absolute; top: 12px; right: 12px; width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--navy-900); color: #fff; display: grid; place-items: center; }
+.zoom-dialog button svg { width: 20px; height: 20px; }
+
+@media (max-width: 1100px) { .prod-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .prod-grid { grid-template-columns: 1fr; gap: 14px; }
+  .prod-filter .seg { width: 100%; }
+  .prod-filter .seg button { flex: 1 1 45%; padding: 10px 8px; font-size: 13.5px; }
 }
