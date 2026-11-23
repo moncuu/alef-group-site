@@ -18,6 +18,11 @@ const COMPANY = {
 
 const DIVISIONS = [
   {
+    slug: "atik", href: "atik-yonetimi.html", icon: "recycle",
+    title: "Atık Yönetimi & Geri Dönüşüm",
+    short: "Kurumsal atık yönetimi, sıfır atık danışmanlığı ve geri dönüşüm hizmetleri.",
+  },
+  {
     slug: "finans", href: "finansal-cozumler.html", icon: "landmark",
     title: "Finansal Çözümler",
     short: "Finansman danışmanlığı ve banka borçları için yeniden yapılandırma danışmanlığı.",
@@ -46,11 +51,6 @@ const DIVISIONS = [
     slug: "site", href: "site-yonetimi.html", icon: "building-2",
     title: "Site Yönetimi, Güvenlik & Temizlik",
     short: "Profesyonel site yönetimi, özel güvenlik, temizlik ve teknik bakım.",
-  },
-  {
-    slug: "atik", href: "atik-yonetimi.html", icon: "recycle",
-    title: "Atık Yönetimi & Geri Dönüşüm",
-    short: "Kurumsal atık yönetimi, sıfır atık danışmanlığı ve geri dönüşüm hizmetleri.",
   },
 ];
 
